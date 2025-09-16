@@ -21,19 +21,18 @@ const cardsData = [
     imageUrl: "https://th-thumbnailer.cdn-si-edu.com/-tlKG2GFwRd68ndN1eGfmGZFdiE=/1026x684/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer/cf/1c/cf1c3c8a-dc51-409e-a223-5e9e0b32c0cd/42-18537790.jpg",
     isScam: true,
   },
-  // Add more cards as needed
 ];
 
 function App() {
   const [current, setCurrent] = useState(0);
   const [right, setRight] = useState(0);
   const [wrong, setWrong] = useState(0);
-  const [feedback, setFeedback] = useState(null); // 'ok' or 'cross'
-  const [swipe, setSwipe] = useState(null); // 'left' or 'right'
+  const [feedback, setFeedback] = useState(null);
+  const [swipe, setSwipe] = useState(null);
 
   const handleGuess = (guessIsScam) => {
     const correct = cardsData[current].isScam === guessIsScam;
-    setSwipe(guessIsScam ? 'left' : 'right'); // left for scam, right for not scam
+    setSwipe(guessIsScam ? 'left' : 'right');
     if (correct) {
       setRight(r => r + 1);
       setFeedback('ok');
@@ -45,7 +44,7 @@ function App() {
       setFeedback(null);
       setSwipe(null);
       setCurrent(c => c + 1);
-    }, 700); // shorter for animation
+    }, 700);
   };
 
   if (current >= cardsData.length) {
