@@ -24,7 +24,7 @@ const cardsData = [
   {
     title: "Bank account locked ",
     description: "Click the link to secure your account.",
-    imageUrl: "https://th-thumbnailer.cdn-si-edu.com/-tlKG2GFwRd68ndN1eGfmGZFdiE=/1026x684/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer/cf/1c/cf1c3c8a-dc51-409e-a223-5e9e0b32c0cd/42-18537790.jpg",
+    imageUrl: "images/suspicious_bank.png",
     isScam: true,
   },
   {
