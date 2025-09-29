@@ -18,7 +18,7 @@ const cardsData = [
   {
     title: "Bank account locked ",
     description: "Click the link to secure your account.",
-    imageUrl: "images/scam1.png",
+    imageUrl: "images/suspicious_bank.png",
     isScam: true,
   },
   {
