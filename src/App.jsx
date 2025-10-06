@@ -101,36 +101,59 @@ const cardsData = [
   },
 ];
 
+// Fisher-Yates shuffle
+function shuffle(array) {
+  const a = array.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 function App() {
-  const [current, setCurrent] = useState(0);
+  // shuffle once at initialization
+  const [deck, setDeck] = useState(() => shuffle(cardsData));
+  const current = deck[0] || null;
+
   const [right, setRight] = useState(0);
   const [wrong, setWrong] = useState(0);
   const [feedback, setFeedback] = useState(null);
   const [swipe, setSwipe] = useState(null);
 
   const handleGuess = (guessIsScam) => {
-    const correct = cardsData[current].isScam === guessIsScam;
+    if (!current) return;
+    const correct = current.isScam === guessIsScam;
     setSwipe(guessIsScam ? 'left' : 'right');
-    if (correct) {
-      setRight(r => r + 1);
-      setFeedback('ok');
-    } else {
-      setWrong(w => w + 1);
-      setFeedback('cross');
-    }
+
+    if (correct) setRight(r => r + 1);
+    else setWrong(w => w + 1);
+
+    setFeedback(correct ? 'ok' : 'cross');
+
     setTimeout(() => {
       setFeedback(null);
       setSwipe(null);
-      setCurrent(c => c + 1);
+      // remove the first card from the deck (immutable)
+      setDeck(prev => prev.slice(1));
     }, 700);
   };
 
-  if (current >= cardsData.length) {
+  const restart = () => {
+    setDeck(shuffle(cardsData));
+    setRight(0);
+    setWrong(0);
+    setFeedback(null);
+    setSwipe(null);
+  };
+
+  if (!current) {
     return (
       <div className="results">
         <h2>Game Over!</h2>
         <p>Right: {right}</p>
         <p>Wrong: {wrong}</p>
+        <button onClick={restart}>Play again</button>
       </div>
     );
   }
@@ -138,7 +161,7 @@ function App() {
   return (
     <div className="swipe-app">
       <div className={`card-container ${swipe ? `swipe-${swipe}` : ''}`}>
-        <Card {...cardsData[current]} />
+        <Card {...current} />
       </div>
       <div className="swipe-buttons">
         <button onClick={() => handleGuess(true)}>Scam</button>
@@ -147,6 +170,7 @@ function App() {
       <div className="counters">
         <span>✅ Right: {right}</span>
         <span>❌ Wrong: {wrong}</span>
+        <span>🃏 Remaining: {deck.length}</span>
       </div>
       {feedback === 'ok' && <div className="feedback ok">✅ Correct!</div>}
       {feedback === 'cross' && <div className="feedback cross">❌ Wrong!</div>}
